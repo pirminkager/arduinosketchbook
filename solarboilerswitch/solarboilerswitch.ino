@@ -21,6 +21,8 @@ unsigned int nReads=0;
 long previousanimMillis;
 float tempsolarValue;
 float tempboilerValue;
+float tempSolar;
+float tempBoiler;
 double rawValue=0;
 //unsigned long timerStart;
 //unsigned long timer;
@@ -53,17 +55,30 @@ long timerValue[NUM_TIMER];
 
 void getsensorData() {
   rawsolarValue=rawsolarValue+analogRead(tempsolarPin);
-  rawboilerValue=rawboilerValue+analogRead(tempboilerValue);
+  rawboilerValue=rawboilerValue+analogRead(tempboilerPin);
   nReads++;
   if (nReads==nIterations) {
     tempboilerValue=rawboilerValue/nIterations;
     tempsolarValue=rawsolarValue/nIterations;
     nReads=0;
-    
+    tempBoiler=calcfloatboiler(tempboilerValue);
+    tempSolar=calcfloatsolar(tempsolarValue);
   }
 }
 
-float calcfloattemp(int temp) {
+float calcfloatsolar(int temp) {
+  double y;
+  double A=4;
+  double B=5;
+  double C=6;
+  double D=7;
+  
+  y = A*pow(temp,3)+B*pow(temp,2)+C*temp+D;
+  
+  return y; 
+}
+
+float calcfloatboiler(int temp) {
   double y;
   double A=4;
   double B=5;
