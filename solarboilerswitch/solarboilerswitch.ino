@@ -21,8 +21,8 @@ unsigned int nReads=0;
 long previousanimMillis;
 float tempsolarValue;
 float tempboilerValue;
-float tempSolar;
-float tempBoiler;
+int tempSolar;
+int tempBoiler;
 double rawValue=0;
 //unsigned long timerStart;
 //unsigned long timer;
@@ -36,22 +36,10 @@ boolean stateS;
 boolean stateB;
 boolean previousvalveState=false;
 char *mode[] = {"A","M"};
+char buff[5];
 long timerValue[NUM_TIMER];
-
-
-//void getsensorData() {
-//  //for(int i=0; i<=nIterations; i++) {
-//  if (nReads<nIterations) {
-//    rawValue=rawValue+analogRead(tempsolarPin);
-//  }
-//  tempsolarValue=rawValue/nIterations;
-//  rawValue=0;
-//  for(int i=0; i<=nIterations; i++) {
-//    rawValue=rawValue+analogRead(tempboilerValue);
-//  }
-//  tempboilerValue=rawValue/nIterations;
-//  rawValue=0;
-//}
+const double calibrationSolar[4]={1,2,3,4};
+const double calibrationBoiler[4]={1,2,3,4};
 
 void getsensorData() {
   rawsolarValue=rawsolarValue+analogRead(tempsolarPin);
@@ -61,32 +49,18 @@ void getsensorData() {
     tempboilerValue=rawboilerValue/nIterations;
     tempsolarValue=rawsolarValue/nIterations;
     nReads=0;
-    tempBoiler=calcfloatboiler(tempboilerValue);
-    tempSolar=calcfloatsolar(tempsolarValue);
+    tempBoiler=calcfloattemp(tempboilerValue, calibrationBoiler);
+    tempSolar=calcfloattemp(tempsolarValue, calibrationSolar);
+    sprintf(buff,"[%2d.%.1d]\n", (int) (tempBoiler/10), (int) (tempBoiler%10));
+    lcdsendString(0,10,4,buff);
+    sprintf(buff,"[%2d.%.1d]\n", (int) (tempSolar/10), (int) (tempSolar%10));
+    lcdsendString(1,10,4,buff);
   }
 }
 
-float calcfloatsolar(int temp) {
+int calcfloattemp(int temp, const double param[]) {
   double y;
-  double A=4;
-  double B=5;
-  double C=6;
-  double D=7;
-  
-  y = A*pow(temp,3)+B*pow(temp,2)+C*temp+D;
-  
-  return y; 
-}
-
-float calcfloatboiler(int temp) {
-  double y;
-  double A=4;
-  double B=5;
-  double C=6;
-  double D=7;
-  
-  y = A*pow(temp,3)+B*pow(temp,2)+C*temp+D;
-  
+  y = (param[0]*pow(temp,3)+param[1]*pow(temp,2)+param[2]*temp+param[3])*10;
   return y; 
 }
 
@@ -142,7 +116,7 @@ void deBounce (int buttonPin) {
 
 }  // end of deBounce
 
-void lcdSend (int col, int row, int len, String string) {
+void lcdsendString (int col, int row, int len, String string) {
   for (int i=string.length();i<len;i++) {
     string += " ";
   }
@@ -165,12 +139,6 @@ void animation() {
     if (!previousvalveState) {
       previousvalveState=true;
     }
-//    if(millis() - previousanimMillis >= animInterval) { 
-//      previousanimMillis = millis();
-//      animNumber++;
-//    }
-//    lcd.setCursor(0,1);
-//    lcd.write(byte(animNumber));
     lcdcustomSend (0,1,animNumber);
     animNumber++;
     if (animNumber == 3) {
@@ -193,31 +161,6 @@ boolean timer(long interval, int timerCount) {
     return false;
   }
 }
-//void displayData () {
-//  lcd.setCursor(0,0);
-//  if (modeSelect) {
-//    lcd.print("M");
-//  }
-//  else {
-//    lcd.print("A");
-//  }
-//  
-//  lcd.setCursor(2,0);
-//  if (sourceSelect) {
-//    lcd.write(byte(0));
-//  }
-//  else {
-//    lcd.write(" ");
-//  }
-//  
-//  lcd.setCursor(2,1);
-//  if (!sourceSelect) {
-//    lcd.write(byte(0));
-//  }
-//  else {
-//    lcd.write(" ");
-//  }
-//}
     
 void setup() {
   attachInterrupt (digitalPinToInterrupt (modeButton), modeSelection, FALLING);
