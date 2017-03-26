@@ -34,10 +34,8 @@ int actual_leds = NUM_LEDS + 5;
 int velocity = 10;
 
 void setup() {
-//  Serial.begin(57600);
 
   LEDS.addLeds<LED_TYPE, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);         // For WS2812B
-//  LEDS.addLeds<LED_TYPE, LED_DT, LED_CK, COLOR_ORDER>(leds, NUM_LEDS);   // For APA102 or WS2801
 
   FastLED.setBrightness(max_bright);
   set_max_power_in_volts_and_milliamps(3.7, 200);               // FastLED 2.1 Power management set at 5V, 500mA
@@ -46,16 +44,14 @@ void setup() {
 
 void loop () {
   EVERY_N_MILLISECONDS(thisdelay) {                           // FastLED based non-blocking routine to update/display the sequence.
-    rainbow_march();
+    animation();
   }
   show_at_max_brightness_for_power();  
 } // loop()
 
 
-void rainbow_march() {                                        // The fill_rainbow call doesn't support brightness levels
+void animation() {                                        // The fill_rainbow call doesn't support brightness levels
   heatindex=heatindex+velocity;                                                  // Increment the starting hue.
-  //fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
-  //fill_gradient_RGB(leds, NUM_LEDS, CRGB(0,0,200), CRGB(150,0,20));  // up to 4 CRGB (or long) values
   for(int i = 0; i < NUM_LEDS; i++) {
     if (i == 7) {
     }
