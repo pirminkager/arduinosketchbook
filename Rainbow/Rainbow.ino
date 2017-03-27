@@ -41,7 +41,7 @@ void loop () {
 } // loop()
 
 
-void rainbow_march() {                                        // The fill_rainbow call doesn't support brightness levels
+void rainbow_march() {                                        // The fill_call doesn't support brightness levels
   thishue++;                                                  // Increment the starting hue.
   fill_rainbow(leds, NUM_LEDS, thishue, deltahue);            // Use FastLED's fill_rainbow routine.
 } // rainbow_march()

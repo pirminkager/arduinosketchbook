@@ -1,5 +1,4 @@
-#include "FastLED.h" // FastLED library.
-#include "ramp2.h"
+#include "FastLED.h"                                          // FastLED library.
 
 #if FASTLED_VERSION < 3001000
 #error "Requires FastLED 3.1 or later; check github for latest code."
@@ -11,27 +10,6 @@
 #define COLOR_ORDER GRB                                       // It's GRB for WS2812B and GBR for APA102
 #define LED_TYPE WS2812B                                     // What kind of strip are you using (APA102, WS2801 or WS2812B)?
 #define NUM_LEDS 10                                           // Number of LED's
-DEFINE_GRADIENT_PALETTE( palette_gp1 ) {
-  0,     0,  0,  0,
- 64,     0,  0,  0,
-128,   255,  0,  0,
-192,     0,  0,  0,
-255,     0,  0,  0 };
-DEFINE_GRADIENT_PALETTE( palette_gp2 ) {
-  0,     0,  0,  0,
- 64,     0,  0,  0,
-128,     0,255,  0,
-192,     0,  0,  0,
-255,     0,  0,  0 };
-DEFINE_GRADIENT_PALETTE( palette_gp3 ) {
-  0,     0,  0,  0,
- 64,     0,  0,  0,
-128,     0,  0,255,
-192,     0,  0,  0,
-255,     0,  0,  0 };
-CRGBPalette16 myPalr = palette_gp1;
-CRGBPalette16 myPalg = palette_gp2;
-CRGBPalette16 myPalb = palette_gp3;
 
 // Initialize changeable global variables.
 uint8_t max_bright = 255;                                     // Overall brightness definition. It can be changed on the fly.
@@ -63,13 +41,11 @@ void loop () {
   show_at_max_brightness_for_power();  
 } // loop()
 
-
-void animation() {                                                        // The fill_rainbow call doesn't support brightness levels
-  heatindex=heatindex+velocity;                                           // Increment the starting hue.
+void animation() {                                        // The fill_rainbow call doesn't support brightness levels
+  heatindex=heatindex+velocity;                                                  // Increment the starting hue.
   for(int i = 0; i < NUM_LEDS; i++) {
     if (i == 7) {
     }
-    uint8_t test = ramp[heatindex];
-    leds[i] = ColorFromPalette( myPalr, heatindex+((i*255)/actual_leds)); // normal palette access
+    leds[i] = ColorFromPalette( RainbowStripeColors_p, heatindex+((i*255)/actual_leds)); // normal palette access
   }
 } // rainbow_march()
