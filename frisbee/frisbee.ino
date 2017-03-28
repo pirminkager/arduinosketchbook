@@ -1,5 +1,5 @@
 #include "FastLED.h" // FastLED library.
-#include "ramp2.h"
+#include "ramp.h"
 
 #if FASTLED_VERSION < 3001000
 #error "Requires FastLED 3.1 or later; check github for latest code."

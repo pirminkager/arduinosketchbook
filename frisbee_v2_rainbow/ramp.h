@@ -1,4 +1,4 @@
-uint8_t ramp[]{0,
+uint8_t ramp[] = {0,
 0,
 0,
 0,

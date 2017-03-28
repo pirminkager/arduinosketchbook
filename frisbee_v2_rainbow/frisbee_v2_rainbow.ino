@@ -47,7 +47,8 @@ void animation() {                                             //
   rampindex += velocity;                                       // 
   for(int i = 0; i < NUM_LEDS; i++) {
     //if (i==7||i==8) {};                                                // led skipping. Could improve smoothness?
-    leds[i] = CHSV(hue,255,ramp[int(rampindex+((i*255)/actual_leds))]); // leds get populated with colorvalues (hue) and brightness (value). Saturation is at max.
+    uint8_t brightness = ramp[(uint8_t)(rampindex+(i*255/actual_leds))];
+    leds[i] = CHSV(hue,255,brightness); // leds get populated with colorvalues (hue) and brightness (value). Saturation is at max.
   }
   // increase color hue every n cycle
   if (cycle >= maxcycle) {
