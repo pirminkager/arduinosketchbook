@@ -1,4 +1,4 @@
-uint8_t ramp[] = {0,
+const uint8_t ramp[] PROGMEM = {0,
 0,
 0,
 0,

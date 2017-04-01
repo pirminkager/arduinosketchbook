@@ -1,3 +1,4 @@
+#include <avr/pgmspace.h>
 #include "FastLED.h" // FastLED library.
 #include "ramp.h"
 
@@ -44,10 +45,12 @@ void loop() {
 } // end loop
 
 void animation() {                                             // 
-  rampindex += velocity;                                       // 
+  rampindex += velocity;  // 
+  cycle++;
   for(int i = 0; i < NUM_LEDS; i++) {
     //if (i==7||i==8) {};                                                // led skipping. Could improve smoothness?
-    uint8_t brightness = ramp[(uint8_t)(rampindex+(i*255/actual_leds))];
+    uint8_t k = (rampindex+(i*255/actual_leds));
+    uint8_t brightness = pgm_read_word_near(ramp + k);
     leds[i] = CHSV(hue,255,brightness); // leds get populated with colorvalues (hue) and brightness (value). Saturation is at max.
   }
   // increase color hue every n cycle
