@@ -89,20 +89,22 @@ void sourcebuttonDown() {
 }
 
 void modeSelection() {
+  int A = false;
+  int M = true;
   if (modebuttonFlag==true) {
-    if (modeSelect==false) {
-      modeSelect=true;
+    if (modeSelect==A) {
+      modeSelect=M;
     }
     else {
-      modeSelect=false;
+      modeSelect=A;
     }
-    if (modeSelect==true) {
-      lcd.setCursor(0,0);
-      lcd.write('A');
-    }
-    else if (modeSelect==false) {
+    if (modeSelect==M) {
       lcd.setCursor(0,0);
       lcd.write('M');
+    }
+    else if (modeSelect==A) {
+      lcd.setCursor(0,0);
+      lcd.write('A');
     }
     deBounce(modeButton);
     EIFR = bit (INTF1);

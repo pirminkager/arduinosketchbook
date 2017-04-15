@@ -26,10 +26,10 @@ uint8_t hue = 0;                                              // Starting hue va
 uint8_t deltahue = 1;                                        // Hue change between completed maxcyclecount.
 
 // global variables for hue-cyclecount
-uint16_t cycle = 0;                                            // Startingvalue for Counting Cycles
-uint16_t maxcycle = 120;                                       // Cycle count when hue increase is triggered.
+uint16_t cycle;                                            // Startingvalue for Counting Cycles
+uint16_t maxcycle = 3;                                       // Cycle count when hue increase is triggered.
 
-uint8_t actual_leds = NUM_LEDS + 5;                           // missing gaps! (des isch verwirrend... actual_leds sollt eigentlich klianor sein)
+uint8_t actual_leds = NUM_LEDS + 9;                           // missing gaps! (des isch verwirrend... actual_leds sollt eigentlich klianor sein)
 
 void setup() {
   LEDS.addLeds<LED_TYPE, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);  // For WS2812B
@@ -48,10 +48,12 @@ void animation() {                                             //
   rampindex += velocity;  // 
   cycle++;
   for(int i = 0; i < NUM_LEDS; i++) {
-    //if (i==7||i==8) {};                                                // led skipping. Could improve smoothness?
+    //if (i==15||i==16||i==17||i==18||i==19||i==20||i==21||i==22||i==23) {}    // led skipping. Could improve smoothness?
+    //else {
     uint8_t k = (rampindex+(i*255/actual_leds));
     uint8_t brightness = pgm_read_word_near(ramp + k);
     leds[i] = CHSV(hue,255,brightness); // leds get populated with colorvalues (hue) and brightness (value). Saturation is at max.
+    //}
   }
   // increase color hue every n cycle
   if (cycle >= maxcycle) {
